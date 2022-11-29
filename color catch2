@@ -1,0 +1,29 @@
+from PIL import Image, ImageDraw, ImageFont
+
+
+def get_dominant_colors(infile):
+    image = Image.open(infile)
+    
+    # 缩小图片，否则计算机压力太大
+    small_image = image.resize((80, 80))
+	# 10个主要颜色的图像
+    result = small_image.convert("P", palette=Image.ADAPTIVE, colors=3)  
+	
+
+
+    # 找到主要的颜色
+    palette = result.getpalette()
+    color_counts = sorted(result.getcolors(), reverse=True)
+    colors = list()
+
+    for i in range(3):
+        palette_index = color_counts[i][1]
+        dominant_color = palette[palette_index * 3 : palette_index * 3 + 3]
+        colors.append(tuple(dominant_color))
+
+    # print(colors)
+    return colors
+
+image_path = r"C:/city.jpg"
+color = get_dominant_colors(image_path)
+print(color)
